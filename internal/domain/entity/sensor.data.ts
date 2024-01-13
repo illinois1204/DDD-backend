@@ -1,6 +1,6 @@
 import { Sensor } from "./sensor";
 
-export class SensorParameter {
+export class SensorData {
     constructor(
         readonly id: string | number,
         readonly moment: Date,
