@@ -1,0 +1,9 @@
+/:
+    get:
+        tags:
+            - Example
+        summary: Just example endpoint
+
+        responses:
+            204:
+                description: No Content

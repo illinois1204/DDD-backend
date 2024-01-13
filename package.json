@@ -1,0 +1,48 @@
+{
+  "name": "ddd-backend",
+  "version": "1.0.0",
+  "author": "illinois",
+  "scripts": {
+    "lint": "eslint . --fix",
+    "build": "npx tsc",
+    "start": "node build/cmd/main",
+    "start:dry": "node -r dotenv/config build/cmd/main",
+    "local": "nodemon -r dotenv/config cmd/main.ts",
+    "migrate:sql:up": "node ./node_modules/knex/bin/cli.js migrate:up --knexfile ./internal/db/sql/config.ts",
+    "migrate:sql:up:local": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:up --knexfile ./internal/db/sql/config.ts"
+  },
+  "nodemonConfig": {
+    "ext": "js, ts, json, yml, yaml"
+  },
+  "dependencies": {
+    "@fastify/auth": "^4.4.0",
+    "@fastify/cors": "^8.4.2",
+    "@fastify/jwt": "^8.0.0",
+    "@fastify/swagger": "^8.13.0",
+    "@fastify/swagger-ui": "^2.0.1",
+    "amqplib": "^0.10.3",
+    "autobind-decorator": "^2.4.0",
+    "fastify": "^4.24.3",
+    "ioredis": "^5.3.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "pg": "^8.11.3",
+    "swagger-jsdoc": "^6.2.8",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.4",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/parser": "^6.13.2",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "nodemon": "^3.0.2",
+    "prettier": "^3.1.1",
+    "prettier-plugin-organize-imports": "^3.2.4"
+  }
+}
