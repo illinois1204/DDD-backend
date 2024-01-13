@@ -4,8 +4,8 @@ import { HandlingErrorType } from "../../../internal/common/enums/errors";
 import { ID, IPrimaryKey } from "../../../internal/common/types/id";
 import { IPagination } from "../../../internal/common/types/pagination";
 import { ISensorCreate, ISensorFilter, ISensorUpdate } from "../../../internal/domain/interface/sensor";
-import { SectorService } from "../../../internal/domain/service/sector";
-import { SensorService } from "../../../internal/domain/service/sensor";
+import { SectorService, SectorServiceInstance } from "../../../internal/domain/service/sector";
+import { SensorService, SensorServiceInstance } from "../../../internal/domain/service/sensor";
 import { IHandlingResponseError } from "../config/http-response";
 import { HttpStatus } from "../config/http-status";
 
@@ -65,4 +65,4 @@ class Controller {
     }
 }
 
-export const SensorController = new Controller(new SensorService(), new SectorService());
+export const SensorController = new Controller(SensorServiceInstance, SectorServiceInstance);

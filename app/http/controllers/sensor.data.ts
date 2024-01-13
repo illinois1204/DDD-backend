@@ -1,7 +1,7 @@
 import AutoBind from "autobind-decorator";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { IPagination } from "../../../internal/common/types/pagination";
-import { SensorDataService } from "../../../internal/domain/service/sensor.data";
+import { SensorDataService, SensorDataServiceInstance } from "../../../internal/domain/service/sensor.data";
 
 @AutoBind
 class Controller {
@@ -11,6 +11,11 @@ class Controller {
         const { limit, offset } = req.query as IPagination;
         return await this.sensorData.getCountedList(limit, offset);
     }
+
+    public async listExtended(req: FastifyRequest, reply: FastifyReply) {
+        const { limit, offset } = req.query as IPagination;
+        // return await this.sensorData.getCountedList(limit, offset);
+    }
 }
 
-export const SensorDataController = new Controller(new SensorDataService());
+export const SensorDataController = new Controller(SensorDataServiceInstance);

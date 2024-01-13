@@ -4,7 +4,7 @@ import { IPrimaryKey } from "../../../internal/common/types/id";
 import { IPagination } from "../../../internal/common/types/pagination";
 import { ISorting } from "../../../internal/common/types/sort-order";
 import { ISectorCreate, ISectorFilter, ISectorUpdate } from "../../../internal/domain/interface/sector";
-import { SectorService } from "../../../internal/domain/service/sector";
+import { SectorService, SectorServiceInstance } from "../../../internal/domain/service/sector";
 import { HttpStatus } from "../config/http-status";
 
 @AutoBind
@@ -44,4 +44,4 @@ class Controller {
     }
 }
 
-export const SectorController = new Controller(new SectorService());
+export const SectorController = new Controller(SectorServiceInstance);

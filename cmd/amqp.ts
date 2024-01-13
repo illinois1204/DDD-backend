@@ -1,4 +1,5 @@
 import amqpTransport from "amqplib";
+import { registerTransport } from "../app/amqp/_index";
 
 export let amqp: amqpTransport.Channel;
 
@@ -10,4 +11,6 @@ export const runAmqpTransport = async () => {
         // password: process.env.AMQP_PASS
     });
     amqp = await connection.createChannel();
+    await registerTransport();
+    console.info("AMQP transport is running");
 };

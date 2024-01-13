@@ -1,9 +1,11 @@
 import { runSQLDriver } from "../internal/db/sql/driver";
+import { runAmqpTransport } from "./amqp";
 import { runHttpServer } from "./http";
 
 void (async function () {
     // await runRedisDriver(String(process.env.RD_HOST), Number(process.env.RD_PORT));
     await runSQLDriver();
+    await runAmqpTransport();
     await runHttpServer();
     console.info("System is fully bootstrapped!");
 })().catch((ex) => {

@@ -9,7 +9,7 @@ export async function up(knex: Knex): Promise<void> {
         })
         .createTable("sensor-data", (table) => {
             table.increments("id");
-            table.timestamp("moment").notNullable();
+            table.timestamp("moment").defaultTo(knex.fn.now()).notNullable();
             table.integer("ppt").notNullable();
             table.smallint("dsn");
             table.boolean("npf");

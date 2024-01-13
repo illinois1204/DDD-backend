@@ -4,10 +4,14 @@ import { ISorting } from "../../common/types/sort-order";
 import { ISensorCreate, ISensorFilter, ISensorUpdate, SensorWhereBuilder } from "../interface/sensor";
 import { SensorRepository } from "../repository/sensor";
 
-export class SensorService {
+class Service {
     private readonly repository: SensorRepository;
     constructor() {
         this.repository = new SensorRepository();
+    }
+
+    async exist(id: ID) {
+        return await this.repository.isExist(id);
     }
 
     async new(doc: ISensorCreate) {
@@ -18,8 +22,8 @@ export class SensorService {
         return await this.repository.getById(id);
     }
 
-    async getList(limit: number, offset: number, filter?) {
-        return await this.repository.list(limit, offset);
+    async getList(limit: number, offset: number, filter?: any) {
+        return await this.repository.list(limit, offset, filter);
     }
 
     async getCountedList(limit: number, offset: number, filter?: ISensorFilter, order?: ISorting): Promise<IPaginationResponse> {
@@ -51,3 +55,6 @@ export class SensorService {
         };
     }
 }
+
+export abstract class SensorService extends Service {}
+export const SensorServiceInstance = new Service();
