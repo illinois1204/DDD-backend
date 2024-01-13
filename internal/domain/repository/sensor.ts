@@ -20,6 +20,10 @@ export class SensorRepository implements IBaseCRUD<Sensor> {
         return await sql<Sensor>(Sensor.alias).where("id", id).first();
     }
 
+    async getByKey<K extends keyof Sensor>(key: K, value: string | number | boolean): Promise<Sensor[]> {
+        return await sql<Sensor>(Sensor.alias).where(key, value);
+    }
+
     async count(where?: SensorWhereBuilder): Promise<Number> {
         const [{ count }] = await sql<Sensor>(Sensor.alias)
             .where(where || {})
@@ -43,7 +47,8 @@ export class SensorRepository implements IBaseCRUD<Sensor> {
         return (await sql<Sensor>(Sensor.alias).where("id", id).update(doc, "*"))[0];
     }
 
-    async deleteById(id: ID): Promise<void> {
-        await sql<Sensor>(Sensor.alias).where("id", id).del();
+    async deleteById(id: ID | ID[]): Promise<void> {
+        const condition: SensorWhereBuilder = (plotter) => (Array.isArray(id) ? plotter.whereIn("id", id) : plotter.where("id", id));
+        await sql<Sensor>(Sensor.alias).where(condition).del();
     }
 }

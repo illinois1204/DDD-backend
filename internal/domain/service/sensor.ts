@@ -40,7 +40,7 @@ export class SensorService {
         return await this.repository.updateById(id, doc);
     }
 
-    async deleteOne(id: ID) {
+    async delete(id: ID | ID[]) {
         await this.repository.deleteById(id);
     }
 

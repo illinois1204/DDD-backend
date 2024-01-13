@@ -20,6 +20,10 @@ export class SectorRepository implements IBaseCRUD<Sector> {
         return await sql<Sector>(Sector.alias).where("id", id).first();
     }
 
+    async getByKey<K extends keyof Sector>(key: K, value: string | number | boolean): Promise<Sector[]> {
+        return await sql<Sector>(Sector.alias).where(key, value);
+    }
+
     async count(where?: SectorWhereBuilder): Promise<Number> {
         const [{ count }] = await sql<Sector>(Sector.alias)
             .where(where || {})
@@ -43,7 +47,8 @@ export class SectorRepository implements IBaseCRUD<Sector> {
         return (await sql<Sector>(Sector.alias).where("id", id).update(doc, "*"))[0];
     }
 
-    async deleteById(id: ID): Promise<void> {
-        await sql<Sector>(Sector.alias).where("id", id).del();
+    async deleteById(id: ID | ID[]): Promise<void> {
+        const condition: SectorWhereBuilder = (plotter) => (Array.isArray(id) ? plotter.whereIn("id", id) : plotter.where("id", id));
+        await sql<Sector>(Sector.alias).where(condition).del();
     }
 }

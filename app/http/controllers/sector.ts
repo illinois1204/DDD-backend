@@ -39,7 +39,7 @@ class Controller {
 
     public async deleteOne(req: FastifyRequest, reply: FastifyReply) {
         const { id } = req.params as IPrimaryKey;
-        await this.sector.deleteOne(id);
+        await this.sector.delete(id);
         reply.code(HttpStatus.NO_CONTENT).send();
     }
 }
