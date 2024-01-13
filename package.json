@@ -8,8 +8,8 @@
     "start": "node build/cmd/main",
     "start:dry": "node -r dotenv/config build/cmd/main",
     "local": "nodemon -r dotenv/config cmd/main.ts",
-    "migrate:sql:up": "node ./node_modules/knex/bin/cli.js migrate:up --knexfile ./internal/db/sql/config.ts",
-    "migrate:sql:up:local": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:up --knexfile ./internal/db/sql/config.ts"
+    "migrate:sql:up": "node ./node_modules/knex/bin/cli.js migrate:latest --knexfile ./internal/db/sql/config.ts",
+    "migrate:sql:up:local": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest --knexfile ./internal/db/sql/config.ts"
   },
   "nodemonConfig": {
     "ext": "js, ts, json, yml, yaml"

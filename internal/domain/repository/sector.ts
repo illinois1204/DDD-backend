@@ -8,7 +8,8 @@ import { SectorWhereBuilder } from "../interface/sector";
 
 export class SectorRepository implements IBaseCRUD<Sector> {
     async isExist(id: ID): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        const [{ count }] = await sql<Sector>(Sector.alias).where("id", id).count();
+        return Boolean(Number(count));
     }
 
     async create(doc: Omit<Sector, "id">): Promise<Sector> {

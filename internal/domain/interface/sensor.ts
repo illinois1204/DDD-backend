@@ -8,4 +8,8 @@ export interface ISensorCreate extends Omit<Sensor, "id"> {
     sector: ID;
 }
 
-export interface ISensorUpdate extends Partial<Omit<Sensor, "id" | "created">> {}
+export interface ISensorUpdate extends Partial<Omit<Sensor, "id">> {}
+
+export interface ISensorFilter {
+    sector?: ID[];
+}

@@ -6,9 +6,10 @@ import { sql } from "../../db/sql/driver";
 import { Sensor } from "../entity/sensor";
 import { SensorWhereBuilder } from "../interface/sensor";
 
-export class SectorRepository implements IBaseCRUD<Sensor> {
+export class SensorRepository implements IBaseCRUD<Sensor> {
     async isExist(id: ID): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        const [{ count }] = await sql<Sensor>(Sensor.alias).where("id", id).count();
+        return Boolean(Number(count));
     }
 
     async create(doc: Omit<Sensor, "id">): Promise<Sensor> {
@@ -35,14 +36,14 @@ export class SectorRepository implements IBaseCRUD<Sensor> {
     }
 
     async listAll(): Promise<Sensor[]> {
-        throw new Error("Method not implemented.");
+        return await sql<Sensor>(Sensor.alias);
     }
 
     async updateById(id: ID, doc: Partial<Omit<Sensor, "id" | "created">>): Promise<Sensor | null | undefined> {
-        throw new Error("Method not implemented.");
+        return (await sql<Sensor>(Sensor.alias).where("id", id).update(doc, "*"))[0];
     }
 
     async deleteById(id: ID): Promise<void> {
-        throw new Error("Method not implemented.");
+        await sql<Sensor>(Sensor.alias).where("id", id).del();
     }
 }
