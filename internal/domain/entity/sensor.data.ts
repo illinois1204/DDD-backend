@@ -7,7 +7,7 @@ export class SensorData {
         readonly ppt: number,
         readonly dsn?: number,
         readonly npf?: boolean,
-        readonly sensor?: string | number | Sensor
+        public sensor?: string | number | Sensor
     ) {}
 
     static alias = "sensor-data";

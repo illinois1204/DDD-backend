@@ -22,6 +22,11 @@ class Service {
         return await this.repository.getById(id);
     }
 
+    async getMany(id: ID[]) {
+        const where: SectorWhereBuilder = (plotter) => plotter.whereIn("id", id);
+        return await this.repository.listAll(where);
+    }
+
     async getList(limit: number, offset: number, filter?: ISectorFilter) {
         const where = filter ? this.makeListingWhere(filter) : undefined;
         return await this.repository.list(limit, offset, where);

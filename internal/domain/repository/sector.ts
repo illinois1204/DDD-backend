@@ -39,8 +39,8 @@ export class SectorRepository implements IBaseCRUD<Sector> {
             .orderBy(order?.sortBy ?? "id", order?.orderBy ?? Order.DESC);
     }
 
-    async listAll(): Promise<Sector[]> {
-        return await sql<Sector>(Sector.alias);
+    async listAll(where?: SectorWhereBuilder): Promise<Sector[]> {
+        return await sql<Sector>(Sector.alias).where(where || {});
     }
 
     async updateById(id: ID, doc: Partial<Omit<Sector, "id" | "created">>): Promise<Sector | null | undefined> {

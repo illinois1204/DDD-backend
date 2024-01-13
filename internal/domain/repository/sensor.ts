@@ -39,8 +39,8 @@ export class SensorRepository implements IBaseCRUD<Sensor> {
             .orderBy(order?.sortBy ?? "id", order?.orderBy ?? Order.DESC);
     }
 
-    async listAll(): Promise<Sensor[]> {
-        return await sql<Sensor>(Sensor.alias);
+    async listAll(where?: SensorWhereBuilder): Promise<Sensor[]> {
+        return await sql<Sensor>(Sensor.alias).where(where || {});
     }
 
     async updateById(id: ID, doc: Partial<Omit<Sensor, "id" | "created">>): Promise<Sensor | null | undefined> {

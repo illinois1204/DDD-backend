@@ -22,8 +22,13 @@ class Service {
         return await this.repository.getById(id);
     }
 
+    async getMany(id: ID[]) {
+        const where: SensorWhereBuilder = (plotter) => plotter.whereIn("id", id);
+        return await this.repository.listAll(where);
+    }
+
     async getList(limit: number, offset: number, filter?: any) {
-        return await this.repository.list(limit, offset, filter);
+        return await this.repository.list(limit, offset);
     }
 
     async getCountedList(limit: number, offset: number, filter?: ISensorFilter, order?: ISorting): Promise<IPaginationResponse> {

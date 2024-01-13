@@ -38,7 +38,7 @@ export class SensorDataRepository implements IBaseCRUD<SensorData> {
             .orderBy(order?.sortBy ?? "id", order?.orderBy ?? Order.DESC);
     }
 
-    async listAll(): Promise<SensorData[]> {
+    async listAll(where?: any): Promise<SensorData[]> {
         throw new Error("Method not implemented.");
     }
 

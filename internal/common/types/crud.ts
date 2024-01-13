@@ -8,7 +8,7 @@ export interface IBaseCRUD<T> {
     getByKey<K extends keyof T>(key: K, value: string | number | boolean): Promise<T[]>;
     count(where?: any): Promise<Number>;
     list(limit: number, offset: number, where?: any, order?: ISorting): Promise<T[]>;
-    listAll(): Promise<T[]>;
+    listAll(where?: any): Promise<T[]>;
     updateById(id: ID, doc: Partial<Omit<T, "id" | "created">>): Promise<T | null | undefined>;
     deleteById(id: ID | ID[]): Promise<void>;
 }
