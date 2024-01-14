@@ -1,14 +1,14 @@
 import { redis } from "../../internal/db/redis/driver";
-import { subscriberExample } from "./pullers/subcriber-1";
+import { saveData } from "./pullers/sensor.data";
 
 enum CHANNELS {
-    CH1 = "CH1"
+    CH1 = "sensors-data"
 }
 
 function channelAllocator(channel: string, msg: string) {
     switch (channel) {
         case CHANNELS.CH1:
-            subscriberExample(msg).catch((ex) => console.error(ex));
+            saveData(msg).catch((ex) => console.error(ex));
             break;
     }
 }
