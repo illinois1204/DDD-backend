@@ -3,7 +3,7 @@ import { registerTransport } from "../app/amqp/_index";
 
 export let amqp: amqpTransport.Channel;
 
-export const runAmqpTransport = async () => {
+export const runAmqpTransport = async (): Promise<void> => {
     const connection = await amqpTransport.connect({
         hostname: process.env.AMQP_HOST,
         port: Number(process.env.AMQP_PORT)

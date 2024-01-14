@@ -1,5 +1,6 @@
 import AutoBind from "autobind-decorator";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { ID } from "../../../internal/common/types/id";
 import { IPagination } from "../../../internal/common/types/pagination";
 import { SensorData } from "../../../internal/domain/entity/sensor.data";
 import { SectorService, SectorServiceInstance } from "../../../internal/domain/service/sector";
@@ -24,10 +25,10 @@ class Controller {
         const { total, body } = await this.sensorData.getCountedList(limit, offset);
         const sensorsData = body as SensorData[];
 
-        const sensorIdList = sensorsData.map((i) => Number(i.sensor));
+        const sensorIdList = sensorsData.map((i) => i.sensor as ID);
         const sensorEntities = await this.sensor.getMany(sensorIdList);
 
-        const sectorIdList = sensorEntities.map((i) => Number(i.sector));
+        const sectorIdList = sensorEntities.map((i) => i.sector as ID);
         const sectorEntities = await this.sector.getMany(sectorIdList);
 
         const buildedResponse = sensorsData.map<SensorData>((row) => {
