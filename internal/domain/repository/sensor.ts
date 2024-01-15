@@ -12,7 +12,7 @@ export class SensorRepository implements IBaseCRUD<Sensor> {
         return Boolean(Number(count));
     }
 
-    async create(doc: Omit<Sensor, "id">): Promise<Sensor> {
+    async insert(doc: Omit<Sensor, "id">): Promise<Sensor> {
         return (await sql<Sensor>(Sensor.alias).insert(doc).returning("*"))[0];
     }
 

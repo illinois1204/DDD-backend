@@ -7,8 +7,3 @@ export interface IPaginationResponse {
     total: number | Number;
     body: object[];
 }
-
-// export interface IPaginationResponse<T> {
-//     total: number | Number;
-//     body: T[] | object[];
-// }

@@ -12,7 +12,7 @@ export class SectorRepository implements IBaseCRUD<Sector> {
         return Boolean(Number(count));
     }
 
-    async create(doc: Omit<Sector, "id">): Promise<Sector> {
+    async insert(doc: Omit<Sector, "id">): Promise<Sector> {
         return (await sql<Sector>(Sector.alias).insert(doc).returning("*"))[0];
     }
 

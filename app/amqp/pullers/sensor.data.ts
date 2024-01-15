@@ -6,5 +6,5 @@ import { AmqpRequest } from "../settings";
 export async function saveData(req: AmqpRequest) {
     const payload = JSON.parse(req.content) as ISensorDataCreate;
     if ((await SensorManagerInstance.exist(payload.sensor)) == false) return;
-    await SensorDataManagerInstance.new(payload);
+    await SensorDataManagerInstance.create(payload);
 }

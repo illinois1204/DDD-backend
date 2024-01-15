@@ -11,9 +11,9 @@ import { HttpStatus } from "../config/http-status";
 class Controller {
     constructor(private readonly sector: SectorManager) {}
 
-    public async create(req: FastifyRequest, reply: FastifyReply) {
+    public async new(req: FastifyRequest, reply: FastifyReply) {
         const doc = req.body as ISectorCreate;
-        const data = await this.sector.new(doc);
+        const data = await this.sector.create(doc);
         reply.code(HttpStatus.CREATED).send(data);
     }
 

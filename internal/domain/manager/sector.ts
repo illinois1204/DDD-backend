@@ -1,49 +1,51 @@
+import { IRepositoryManager } from "../../common/types/crud";
 import { ID } from "../../common/types/id";
 import { IPaginationResponse } from "../../common/types/pagination";
 import { ISorting } from "../../common/types/sort-order";
-import { ISectorCreate, ISectorFilter, ISectorUpdate, SectorWhereBuilder } from "../interface/sector";
+import { Sector } from "../entity/sector";
+import { ISectorFilter, SectorWhereBuilder } from "../interface/sector";
 import { SectorRepository } from "../repository/sector";
 
-class Manager {
+class Manager implements IRepositoryManager<Sector> {
     private readonly repository: SectorRepository;
     constructor() {
         this.repository = new SectorRepository();
     }
 
-    async exist(id: ID) {
+    async exist(id: ID): Promise<boolean> {
         return await this.repository.isExist(id);
     }
 
-    async new(doc: ISectorCreate) {
-        return await this.repository.create(doc);
+    async create(doc: any): Promise<Sector> {
+        return await this.repository.insert(doc);
     }
 
-    async getOne(id: ID) {
+    async getOne(id: ID): Promise<Sector | null | undefined> {
         return await this.repository.getById(id);
     }
 
-    async getMany(id: ID[]) {
+    async getMany(id: ID[]): Promise<Sector[]> {
         const where: SectorWhereBuilder = (plotter) => plotter.whereIn("id", id);
         return await this.repository.listAll(where);
     }
 
-    async getList(limit: number, offset: number, filter?: ISectorFilter) {
+    async getList(filter?: any, reduce?: { limit: number; offset: number } | undefined): Promise<Sector[]> {
         const where = filter ? this.makeListingWhere(filter) : undefined;
-        return await this.repository.list(limit, offset, where);
+        return reduce ? await this.repository.list(reduce.limit, reduce.offset, where) : await this.repository.listAll(where);
     }
 
-    async getCountedList(limit: number, offset: number, filter?: ISectorFilter, order?: ISorting): Promise<IPaginationResponse> {
+    async getCountedList(limit: number, offset: number, filter?: any, order?: ISorting | undefined): Promise<IPaginationResponse> {
         const where = filter ? this.makeListingWhere(filter) : undefined;
         const total = await this.repository.count(where);
         const body = await this.repository.list(limit, offset, where, order?.sortBy ? order : undefined);
         return { total, body };
     }
 
-    async updateOne(id: ID, doc: ISectorUpdate) {
+    async updateOne(id: ID, doc: Partial<Omit<Sector, "id" | "created">>): Promise<Sector | null | undefined> {
         return await this.repository.updateById(id, doc);
     }
 
-    async delete(id: ID | ID[]) {
+    async delete(id: ID | ID[]): Promise<void> {
         await this.repository.deleteById(id);
     }
 

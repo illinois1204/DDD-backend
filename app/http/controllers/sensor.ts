@@ -16,14 +16,14 @@ class Controller {
         private readonly sector: SectorManager
     ) {}
 
-    public async create(req: FastifyRequest, reply: FastifyReply) {
+    public async new(req: FastifyRequest, reply: FastifyReply) {
         const doc = req.body as ISensorCreate;
         if (!(await this.sector.exist(doc.sector))) {
             const info: IHandlingResponseError = { property: "sector", type: HandlingErrorType.FOUND };
             reply.code(HttpStatus.NOT_FOUND);
             return info;
         }
-        const data = await this.sensor.new(doc);
+        const data = await this.sensor.create(doc);
         reply.code(HttpStatus.CREATED).send(data);
     }
 

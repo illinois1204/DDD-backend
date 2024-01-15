@@ -11,7 +11,7 @@ export class SensorDataRepository implements IBaseCRUD<SensorData> {
         throw new Error("Method not implemented.");
     }
 
-    async create(doc: Omit<SensorData, "id" | "moment">): Promise<SensorData> {
+    async insert(doc: Omit<SensorData, "id" | "moment">): Promise<SensorData> {
         return (await sql<SensorData>(SensorData.alias).insert(doc).returning("*"))[0];
     }
 
