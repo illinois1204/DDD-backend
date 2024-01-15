@@ -4,7 +4,7 @@ import { ISorting } from "../../common/types/sort-order";
 import { ISectorCreate, ISectorFilter, ISectorUpdate, SectorWhereBuilder } from "../interface/sector";
 import { SectorRepository } from "../repository/sector";
 
-class Service {
+class Manager {
     private readonly repository: SectorRepository;
     constructor() {
         this.repository = new SectorRepository();
@@ -57,5 +57,5 @@ class Service {
     }
 }
 
-export abstract class SectorService extends Service {}
-export const SectorServiceInstance = new Service();
+export abstract class SectorManager extends Manager {}
+export const SectorManagerInstance = new Manager();

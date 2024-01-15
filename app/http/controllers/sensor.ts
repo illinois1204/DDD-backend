@@ -4,16 +4,16 @@ import { HandlingErrorType } from "../../../internal/common/enums/errors";
 import { ID, IPrimaryKey } from "../../../internal/common/types/id";
 import { IPagination } from "../../../internal/common/types/pagination";
 import { ISensorCreate, ISensorFilter, ISensorUpdate } from "../../../internal/domain/interface/sensor";
-import { SectorService, SectorServiceInstance } from "../../../internal/domain/service/sector";
-import { SensorService, SensorServiceInstance } from "../../../internal/domain/service/sensor";
+import { SectorManager, SectorManagerInstance } from "../../../internal/domain/manager/sector";
+import { SensorManager, SensorManagerInstance } from "../../../internal/domain/manager/sensor";
 import { IHandlingResponseError } from "../config/http-response";
 import { HttpStatus } from "../config/http-status";
 
 @AutoBind
 class Controller {
     constructor(
-        private readonly sensor: SensorService,
-        private readonly sector: SectorService
+        private readonly sensor: SensorManager,
+        private readonly sector: SectorManager
     ) {}
 
     public async create(req: FastifyRequest, reply: FastifyReply) {
@@ -65,4 +65,4 @@ class Controller {
     }
 }
 
-export const SensorController = new Controller(SensorServiceInstance, SectorServiceInstance);
+export const SensorController = new Controller(SensorManagerInstance, SectorManagerInstance);

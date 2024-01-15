@@ -4,7 +4,7 @@ import { ISorting } from "../../common/types/sort-order";
 import { ISensorCreate, ISensorFilter, ISensorUpdate, SensorWhereBuilder } from "../interface/sensor";
 import { SensorRepository } from "../repository/sensor";
 
-class Service {
+class Manager {
     private readonly repository: SensorRepository;
     constructor() {
         this.repository = new SensorRepository();
@@ -61,5 +61,5 @@ class Service {
     }
 }
 
-export abstract class SensorService extends Service {}
-export const SensorServiceInstance = new Service();
+export abstract class SensorManager extends Manager {}
+export const SensorManagerInstance = new Manager();

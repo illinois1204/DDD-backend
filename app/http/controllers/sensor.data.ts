@@ -3,16 +3,16 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { ID } from "../../../internal/common/types/id";
 import { IPagination } from "../../../internal/common/types/pagination";
 import { SensorData } from "../../../internal/domain/entity/sensor.data";
-import { SectorService, SectorServiceInstance } from "../../../internal/domain/service/sector";
-import { SensorService, SensorServiceInstance } from "../../../internal/domain/service/sensor";
-import { SensorDataService, SensorDataServiceInstance } from "../../../internal/domain/service/sensor.data";
+import { SectorManager, SectorManagerInstance } from "../../../internal/domain/manager/sector";
+import { SensorManager, SensorManagerInstance } from "../../../internal/domain/manager/sensor";
+import { SensorDataManager, SensorDataManagerInstance } from "../../../internal/domain/manager/sensor.data";
 
 @AutoBind
 class Controller {
     constructor(
-        private readonly sensorData: SensorDataService,
-        private readonly sensor: SensorService,
-        private readonly sector: SectorService
+        private readonly sensorData: SensorDataManager,
+        private readonly sensor: SensorManager,
+        private readonly sector: SectorManager
     ) {}
 
     public async list(req: FastifyRequest, reply: FastifyReply) {
@@ -44,4 +44,4 @@ class Controller {
     }
 }
 
-export const SensorDataController = new Controller(SensorDataServiceInstance, SensorServiceInstance, SectorServiceInstance);
+export const SensorDataController = new Controller(SensorDataManagerInstance, SensorManagerInstance, SectorManagerInstance);

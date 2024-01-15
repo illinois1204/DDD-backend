@@ -3,7 +3,7 @@ import { ISorting } from "../../common/types/sort-order";
 import { ISensorDataCreate } from "../interface/sensor.data";
 import { SensorDataRepository } from "../repository/sensor.data";
 
-class Service {
+class Manager {
     private readonly repository: SensorDataRepository;
     constructor() {
         this.repository = new SensorDataRepository();
@@ -20,5 +20,5 @@ class Service {
     }
 }
 
-export abstract class SensorDataService extends Service {}
-export const SensorDataServiceInstance = new Service();
+export abstract class SensorDataManager extends Manager {}
+export const SensorDataManagerInstance = new Manager();

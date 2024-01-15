@@ -4,12 +4,12 @@ import { IPrimaryKey } from "../../../internal/common/types/id";
 import { IPagination } from "../../../internal/common/types/pagination";
 import { ISorting } from "../../../internal/common/types/sort-order";
 import { ISectorCreate, ISectorFilter, ISectorUpdate } from "../../../internal/domain/interface/sector";
-import { SectorService, SectorServiceInstance } from "../../../internal/domain/service/sector";
+import { SectorManager, SectorManagerInstance } from "../../../internal/domain/manager/sector";
 import { HttpStatus } from "../config/http-status";
 
 @AutoBind
 class Controller {
-    constructor(private readonly sector: SectorService) {}
+    constructor(private readonly sector: SectorManager) {}
 
     public async create(req: FastifyRequest, reply: FastifyReply) {
         const doc = req.body as ISectorCreate;
@@ -44,4 +44,4 @@ class Controller {
     }
 }
 
-export const SectorController = new Controller(SectorServiceInstance);
+export const SectorController = new Controller(SectorManagerInstance);

@@ -1,14 +1,17 @@
 import { FastifyStaticSwaggerOptions } from "@fastify/swagger";
 import { FastifySwaggerUiOptions } from "@fastify/swagger-ui";
 import SwaggerJSDoc from "swagger-jsdoc";
+import { HandlingErrorType } from "../../../internal/common/enums/errors";
 
+// prettier-ignore
+const errorTypes = Object.values(HandlingErrorType).map((i) => `<li>${i}</li>`).join("");
 const swaggerDocument = SwaggerJSDoc({
     definition: {
         openapi: "3.0.0",
         info: {
             title: "DDD",
             version: "1.0.0",
-            description: "The REST API documentation."
+            description: "<h3>The REST API documentation.</h3>" + "<b>Available error types:</b>" + `<ul>${errorTypes}</ul>`
         },
         servers: [{ url: process.env.APP_DOMAIN }],
         components: {
