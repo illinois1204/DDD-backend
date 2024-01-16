@@ -6,7 +6,7 @@ import { runRedisTransport } from "./redis";
 
 void (async function () {
     await runSQLDriver();
-    await runRedisDriver(String(process.env.RD_HOST), Number(process.env.RD_PORT), { db: Number(process.env.RD_DB || 0) });
+    await runRedisDriver();
     await runRedisTransport();
     await runAmqpTransport();
     await runHttpServer();

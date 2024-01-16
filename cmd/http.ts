@@ -14,7 +14,7 @@ export const runHttpServer = async (): Promise<void> => {
     const PORT = Number(process.env.PORT || 5000);
     await app.register(fastifyCors);
     app.register(fastifyAuth, { defaultRelation: "and" });
-    app.register(fastifyJwt, { secret: process.env.TOKEN_SECRET! });
+    app.register(fastifyJwt, { secret: String(process.env.TOKEN_SECRET) });
     app.register(fastifySwagger, swaggerOption);
     app.register(fastifySwaggerUi, swaggerUiOption);
     app.setValidatorCompiler(AppValidator);
