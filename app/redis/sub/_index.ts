@@ -17,5 +17,5 @@ export const registerSubTransport = async (): Promise<void> => {
     const subInstance = redis.duplicate();
     await subInstance.subscribe(...Object.values(CHANNELS));
     subInstance.on("message", (channel, msg) => channelAllocator(channel, msg));
-    console.info("Redis Sub transport is running");
+    console.info("[Redis Sub] transport is running");
 };

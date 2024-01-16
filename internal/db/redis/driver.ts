@@ -11,5 +11,5 @@ export const runRedisDriver = async (): Promise<void> => {
     };
     redis = new Redis(Number(process.env.RD_PORT), String(process.env.RD_HOST), config);
     await redis.connect();
-    console.info("Redis connection has been verified");
+    console.info("[Redis] connection has been verified");
 };

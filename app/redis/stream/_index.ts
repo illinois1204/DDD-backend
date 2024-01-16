@@ -25,7 +25,7 @@ async function streamAllocator(stream: string, messages: string[][]) {
 }
 
 export const registerStreamTransport = async (): Promise<never> => {
-    console.info("Redis Stream transport is running");
+    console.info("[Redis Stream] transport is running");
 
     const GROUP = String(process.env.RD_GROUP);
     const CONSUMER = String(process.env.RD_CONSUMER); // or hostname may be

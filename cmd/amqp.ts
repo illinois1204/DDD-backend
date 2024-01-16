@@ -12,5 +12,5 @@ export const runAmqpTransport = async (): Promise<void> => {
     });
     amqp = await connection.createChannel();
     await registerTransport();
-    console.info("AMQP transport is running");
+    console.info("[AMQP] transport is running");
 };

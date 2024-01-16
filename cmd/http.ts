@@ -22,5 +22,5 @@ export const runHttpServer = async (): Promise<void> => {
 
     Provider.forEach((router) => app.register(router.instance, { prefix: router.prefix }));
     await app.listen({ host: "0.0.0.0", port: PORT });
-    console.info(`Http app is running on port ${PORT}`);
+    console.info(`[Http] app is running on port ${PORT}`);
 };

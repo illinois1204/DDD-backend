@@ -1,3 +1,4 @@
+import { runNoSQLDriver } from "../internal/db/nosql/driver";
 import { runRedisDriver } from "../internal/db/redis/driver";
 import { runSQLDriver } from "../internal/db/sql/driver";
 import { runAmqpTransport } from "./amqp";
@@ -6,9 +7,10 @@ import { runRedisTransport } from "./redis";
 
 void (async function () {
     await runSQLDriver();
-    await runRedisDriver();
-    await runRedisTransport();
-    await runAmqpTransport();
+    await runNoSQLDriver();
+    // await runRedisDriver();
+    // await runRedisTransport();
+    // await runAmqpTransport();
     await runHttpServer();
     console.info("System is fully bootstrapped!");
 })().catch((ex) => {
