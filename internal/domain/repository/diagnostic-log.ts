@@ -19,11 +19,7 @@ export class DiagnosticLogRepository implements IBaseCRUD<DiagnosticLog> {
         const result = await noSql<DiagnosticLog>(DiagnosticLog.alias).findOne({ _id: new ObjectId(id) });
         const { _id, ...rest } = result || {};
         return _id ? ({ id: _id.toString(), ...rest } as DiagnosticLog) : null; // TODO: нужен маппер
-        // if (result) {
-        //     const { _id, ...rest } = result;
-        //     rest.id = _id.toString();
-        //     return { ...rest };
-        // }
+        // return result ? NoSQLMapper.toEntity<DiagnosticLog>(result) : null; // Mapper v1
     }
 
     async getByKey<K extends keyof DiagnosticLog>(key: K, value: string | number | boolean): Promise<DiagnosticLog[]> {
