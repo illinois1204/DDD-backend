@@ -5,8 +5,8 @@
   "scripts": {
     "lint": "eslint . --fix",
     "build": "npx tsc",
-    "start": "node build/cmd/main",
-    "start:dry": "node -r dotenv/config build/cmd/main",
+    "start": "node -r source-map-support/register build/cmd/main",
+    "start:dry": "node -r dotenv/config -r source-map-support/register build/cmd/main",
     "local": "nodemon -r dotenv/config cmd/main.ts",
     "migrate:sql:up": "node ./node_modules/knex/bin/cli.js migrate:latest --knexfile ./internal/db/sql/config.ts",
     "migrate:sql:up:local": "node -r dotenv/config ./node_modules/knex/bin/cli.js migrate:latest --knexfile ./internal/db/sql/config.ts"
@@ -29,6 +29,7 @@
     "knex": "^3.1.0",
     "mongodb": "^6.3.0",
     "pg": "^8.11.3",
+    "source-map-support": "^0.5.21",
     "swagger-jsdoc": "^6.2.8",
     "ts-node": "^10.9.2"
   },

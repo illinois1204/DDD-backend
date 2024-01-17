@@ -1,9 +1,11 @@
+import { Filter } from "mongodb";
+import { between } from "../../common/handlers/between";
 import { IRepositoryManager } from "../../common/types/crud";
 import { ID } from "../../common/types/id";
 import { IPaginationResponse } from "../../common/types/pagination";
 import { ISorting } from "../../common/types/sort-order";
 import { DiagnosticLog } from "../entity/diagnostic-log";
-import { IDiagnosticLogCreate } from "../interface/diagnostic-log";
+import { IDiagnosticLogCreate, IDiagnosticLogFilter } from "../interface/diagnostic-log";
 import { DiagnosticLogRepository } from "../repository/diagnostic-log";
 
 class Manager implements IRepositoryManager<DiagnosticLog> {
@@ -28,12 +30,16 @@ class Manager implements IRepositoryManager<DiagnosticLog> {
         throw new Error("Method not implemented.");
     }
 
-    async getList(filter?: any, reduce?: { limit: number; offset: number } | undefined): Promise<DiagnosticLog[]> {
-        throw new Error("Method not implemented.");
+    async getList(filter?: IDiagnosticLogFilter, reduce?: { limit: number; offset: number } | undefined): Promise<DiagnosticLog[]> {
+        const where: Filter<DiagnosticLog> = { date: between(filter?.dateFrom) };
+        return reduce ? await this.repository.list(reduce.limit, reduce.offset, where) : await this.repository.listAll(where);
     }
 
-    async getCountedList(limit: number, offset: number, filter?: any, order?: ISorting | undefined): Promise<IPaginationResponse> {
-        throw new Error("Method not implemented.");
+    async getCountedList(limit: number, offset: number, filter?: IDiagnosticLogFilter, order?: ISorting | undefined): Promise<IPaginationResponse> {
+        const where: Filter<DiagnosticLog> = { date: between(filter?.dateFrom) };
+        const total = await this.repository.count(where);
+        const body = await this.repository.list(limit, offset, where);
+        return { total, body };
     }
 
     async updateOne(id: ID, doc: Partial<Omit<DiagnosticLog, "id" | "created">>): Promise<DiagnosticLog | null | undefined> {
@@ -41,7 +47,7 @@ class Manager implements IRepositoryManager<DiagnosticLog> {
     }
 
     async delete(id: ID | ID[]): Promise<void> {
-        throw new Error("Method not implemented.");
+        await this.repository.deleteById(id);
     }
 }
 
