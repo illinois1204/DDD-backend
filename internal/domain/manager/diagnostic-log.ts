@@ -4,8 +4,14 @@ import { IRepositoryManager } from "../../common/types/crud";
 import { ID } from "../../common/types/id";
 import { IPaginationResponse } from "../../common/types/pagination";
 import { ISorting } from "../../common/types/sort-order";
+import { noSql } from "../../db/nosql/driver";
 import { DiagnosticLog, Inventory } from "../entity/diagnostic-log";
-import { IDiagnosticLogCreate, IDiagnosticLogFilter, IDiagnosticLogInventoryUpdate } from "../interface/diagnostic-log";
+import {
+    IDiagnosticLogCreate,
+    IDiagnosticLogFilter,
+    IDiagnosticLogInventoryCreate,
+    IDiagnosticLogInventoryUpdate
+} from "../interface/diagnostic-log";
 import { DiagnosticLogRepository } from "../repository/diagnostic-log";
 
 class Manager implements IRepositoryManager<DiagnosticLog> {
@@ -54,6 +60,28 @@ class Manager implements IRepositoryManager<DiagnosticLog> {
     async updateInventory(id: ID, inventoryId: ID, doc: IDiagnosticLogInventoryUpdate): Promise<Inventory | null | undefined> {
         const result = await this.repository.updateWithInnerId(id, inventoryId, doc);
         return result?.inventory?.find((i) => i.id == inventoryId);
+    }
+
+    // как вариант не юзать репозиторий для вложенных сущностей (работать прям в менеджере) (хз)
+    //
+    async addInventory(id: ID, doc: IDiagnosticLogInventoryCreate) {
+        const inventoryId = new ObjectId();
+
+        const result = await noSql<DiagnosticLog>(DiagnosticLog.alias).findOneAndUpdate(
+            { _id: new ObjectId(id) },
+            { $push: { inventory: { ...doc, id: inventoryId } } },
+            { returnDocument: "after" }
+        );
+        console.log(result);
+        return result?.inventory?.find((i) => i.id == inventoryId.toString());
+    }
+
+    async pullInventory(id: ID, inventoryId: ID | ID[]): Promise<void> {
+        const transformedId = [inventoryId].flat().map((i) => new ObjectId(i));
+        await noSql<DiagnosticLog>(DiagnosticLog.alias).updateOne(
+            { _id: new ObjectId(id) },
+            { $pull: { inventory: { id: { $in: transformedId } } } }
+        );
     }
 }
 
