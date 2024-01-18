@@ -26,7 +26,7 @@ class Controller {
         const { id } = req.params as IPrimaryKey;
         const data = await this.sector.getOne(id);
         if (data) return data;
-        else reply.code(404);
+        else reply.code(HttpStatus.NOT_FOUND);
     }
 
     public async updateOne(req: FastifyRequest, reply: FastifyReply) {
@@ -34,7 +34,7 @@ class Controller {
         const doc = req.body as ISectorUpdate;
         const data = await this.sector.updateOne(id, doc);
         if (data) return data;
-        else reply.code(404);
+        else reply.code(HttpStatus.NOT_FOUND);
     }
 
     public async deleteOne(req: FastifyRequest, reply: FastifyReply) {

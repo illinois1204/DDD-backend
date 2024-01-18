@@ -5,6 +5,7 @@ import { ISorting } from "../../common/types/sort-order";
 import { noSql } from "../../db/nosql/driver";
 import { NoSQLMapper } from "../../db/nosql/mapper";
 import { DiagnosticLog } from "../entity/diagnostic-log";
+import { IDiagnosticLogInventoryUpdate } from "../interface/diagnostic-log";
 
 export class DiagnosticLogRepository implements IBaseCRUD<DiagnosticLog> {
     async isExist(id: ID): Promise<boolean> {
@@ -46,14 +47,24 @@ export class DiagnosticLogRepository implements IBaseCRUD<DiagnosticLog> {
         return NoSQLMapper.toArrayEntity(result);
     }
 
-    async updateById(id: ID, doc: Partial<Omit<DiagnosticLog, "id" | "created">>): Promise<DiagnosticLog | null | undefined> {
-        // await noSql<DiagnosticLog>(DiagnosticLog.alias).updateOne({ _id: new ObjectId(id) }, { $set: doc });
-        // await noSql<DiagnosticLog>(DiagnosticLog.alias).updateOne({ _id: new ObjectId(id) }, doc);
+    async updateById(id: ID, doc: Partial<Omit<DiagnosticLog, "id" | "created" | "inventory">>): Promise<DiagnosticLog | null | undefined> {
         throw new Error("Method not implemented.");
     }
 
     async deleteById(id: ID | ID[]): Promise<void> {
         const transformedId = [id].flat().map((i) => new ObjectId(i));
         await noSql<DiagnosticLog>(DiagnosticLog.alias).deleteMany({ _id: { $in: transformedId } });
+    }
+
+    async updateWithInnerId(id: ID, innerId: ID, doc: IDiagnosticLogInventoryUpdate): Promise<DiagnosticLog | null | undefined> {
+        const innerDoc = {};
+        Object.entries(doc).forEach(([key, value]) => (innerDoc[`inventory.$.${key}`] = value));
+
+        const result = await noSql<DiagnosticLog>(DiagnosticLog.alias).findOneAndUpdate(
+            { _id: new ObjectId(id), "inventory.id": new ObjectId(innerId) },
+            { $set: innerDoc },
+            { returnDocument: "after" }
+        );
+        return result ? NoSQLMapper.toEntity(result) : null;
     }
 }
