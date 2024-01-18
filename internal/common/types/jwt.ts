@@ -1,6 +1,6 @@
 export interface IJwt {
-    id: string;
-    session?: string;
+    id: string | number;
+    session?: any;
     iat?: number;
     exp?: number;
 }

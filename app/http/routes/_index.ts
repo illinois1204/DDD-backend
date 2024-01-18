@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import { authDemoProvider } from "./auth.demo";
 import { diagnosticLogProvider } from "./diagnostic-log";
 import { sectorProvider } from "./sector";
 import { sensorProvider } from "./sensor";
@@ -13,5 +14,6 @@ export const Provider: Array<IProvider> = [
     { instance: sectorProvider, prefix: "sector" },
     { instance: sensorProvider, prefix: "sensor" },
     { instance: sensorDataProvider, prefix: "sensor/data" },
-    { instance: diagnosticLogProvider, prefix: "diagnostic" }
+    { instance: diagnosticLogProvider, prefix: "diagnostic" },
+    { instance: authDemoProvider, prefix: "auth" }
 ];
