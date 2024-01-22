@@ -1,0 +1,9 @@
+.vscode
+.idea
+.env*
+.git*
+.eslintrc
+.prettierrc
+README.md
+node_modules
+build
