@@ -8,9 +8,9 @@ import { runRedisTransport } from "./redis";
 void (async function () {
     await runSQLDriver();
     await runNoSQLDriver();
-    // await runRedisDriver();
-    // await runRedisTransport();
-    // await runAmqpTransport();
+    await runRedisDriver();
+    await runRedisTransport();
+    await runAmqpTransport();
     await runHttpServer();
     console.info("System is fully bootstrapped!");
 })().catch((ex) => {
