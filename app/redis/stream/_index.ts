@@ -2,13 +2,18 @@ import { Redis } from "ioredis";
 import { redis } from "../../../internal/db/redis/driver";
 import { saveData } from "./sensor.data";
 
+interface IIdWithMessages extends Array<string | Array<string>> {
+    0: string;
+    1: string[];
+}
+
 enum STREAMS {
     STREAM1 = "sensors-data"
 }
 
-function receiver(stream: string, messages: string[][], delegate: (req: string) => Promise<void>) {
+function receiver(stream: string, messages: IIdWithMessages[], delegate: (req: string) => Promise<void>) {
     messages.forEach((i) => {
-        const [id, data] = i as [string, string[]];
+        const [id, data] = i;
         // console.log("key1", data[0], "value1", data[1]);
         // console.log("key2", data[2], "value2", data[3]);
         delegate(data[1]).catch((ex) => console.error(ex));
@@ -16,7 +21,7 @@ function receiver(stream: string, messages: string[][], delegate: (req: string) 
     });
 }
 
-async function streamAllocator(stream: string, messages: string[][]) {
+async function streamAllocator(stream: string, messages: IIdWithMessages[]) {
     switch (stream) {
         case STREAMS.STREAM1:
             receiver(stream, messages, saveData);
@@ -41,7 +46,7 @@ export const registerStreamTransport = async (): Promise<never> => {
         // eslint-disable-next-line prettier/prettier
         const data = await streamRedis.xreadgroup("GROUP", GROUP, CONSUMER, "COUNT", MSG_LIMIT, "BLOCK", BLOCK_TIMEOUT, "NOACK", "STREAMS", ...streams);
         if (data == null) continue;
-        const [stream, messages] = data[0] as [string, string[][]];
+        const [stream, messages] = data[0] as [string, IIdWithMessages[]];
         streamAllocator(stream, messages);
     }
 };
