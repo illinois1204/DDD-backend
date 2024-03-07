@@ -5,7 +5,7 @@ export let redis: Redis;
 export const runRedisDriver = async (): Promise<void> => {
     const config: CommonRedisOptions = {
         username: process.env.RD_USER || "default",
-        password: process.env.RD_USER,
+        password: process.env.RD_PASS,
         db: Number(process.env.RD_DB || 0),
         lazyConnect: true
     };
