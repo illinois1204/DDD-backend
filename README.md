@@ -47,7 +47,7 @@
             |
             |__common (интерфейсы, хендлеры, типы, энумы)
             |
-            |__db (драйверы подключения)
+            |__db (драйверы подключения, миграции)
             |
             |__domain (описание сущностей и работа с репозиториями)
             |
@@ -57,19 +57,37 @@
 ## Команды для запуска и работы с проектом
 
 #### создать миграцию:
+```sh
+npx knex migrate:make -x ts --migrations-directory ./internal/db/sql/migrations _name_
 ```
-npx knex migrate:make _name_ -x ts --migrations-directory ./internal/db/sql/migrations
+или
+```sh
+npm run migrate:sql:make -- _name_
+```
+
+#### создать заполнение (seeder):
+Исходные файлы выполняются в алфавитном порядке. В отличие от миграций, пронумерованных последовательностью создания.
+```sh
+npx knex seed:make -x ts --cwd ./internal/db/sql _name_
+```
+или
+```sh
+npm run seed:sql:make -- _name_
 ```
 
 #### скрипты управления:
-```
+```sh
 "lint": линт всего проекта
 "build": билд проекта
 "start": запуск билда
 "start:dry": запуск билда на локальной машине (для теста)
 "local": запуск при локальной разработке
+"migrate:sql:make": создать миграцию (с передачей параметра)
 "migrate:sql:up": запуск миграции
 "migrate:sql:up:local": запуск миграции на локальной машине
+"seed:sql:make": создать заполнение (с передачей параметра)
+"seed:sql:up": запуск заполнения
+"seed:sql:up:local": запуск заполнения на локальной машине
 ```
 
 # Прочее
