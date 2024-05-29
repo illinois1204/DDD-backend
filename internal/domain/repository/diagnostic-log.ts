@@ -7,7 +7,7 @@ import { NoSQLMapper } from "../../db/nosql/mapper";
 import { DiagnosticLog } from "../entity/diagnostic-log";
 import { IDiagnosticLogInventoryUpdate } from "../interface/diagnostic-log";
 
-export class DiagnosticLogRepository implements IBaseCRUD<DiagnosticLog> {
+export abstract class DiagnosticLogRepository implements IBaseCRUD<DiagnosticLog> {
     async isExist(id: ID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }

@@ -44,4 +44,4 @@ class Controller {
     }
 }
 
-export const SectorController = new Controller(SectorManagerInstance);
+export const sectorController = new Controller(SectorManagerInstance);

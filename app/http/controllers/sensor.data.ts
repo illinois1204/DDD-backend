@@ -44,4 +44,4 @@ class Controller {
     }
 }
 
-export const SensorDataController = new Controller(SensorDataManagerInstance, SensorManagerInstance, SectorManagerInstance);
+export const sensorDataController = new Controller(SensorDataManagerInstance, SensorManagerInstance, SectorManagerInstance);

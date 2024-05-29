@@ -6,7 +6,7 @@ import { sql } from "../../db/sql/driver";
 import { Sensor } from "../entity/sensor";
 import { SensorWhereBuilder } from "../interface/sensor";
 
-export class SensorRepository implements IBaseCRUD<Sensor> {
+export abstract class SensorRepository implements IBaseCRUD<Sensor> {
     async isExist(id: ID): Promise<boolean> {
         const [{ count }] = await sql<Sensor>(Sensor.alias).where("id", id).count();
         return Boolean(Number(count));

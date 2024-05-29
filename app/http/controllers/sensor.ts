@@ -19,7 +19,7 @@ class Controller {
     public async new(req: FastifyRequest, reply: FastifyReply) {
         const doc = req.body as ISensorCreate;
         if (!(await this.sector.exist(doc.sector))) {
-            const info: IHandlingResponseError = { property: "sector", type: HandlingErrorType.FOUND };
+            const info: IHandlingResponseError = { property: "sector", type: HandlingErrorType.Found };
             reply.code(HttpStatus.NOT_FOUND);
             return info;
         }
@@ -49,7 +49,7 @@ class Controller {
         const doc = req.body as ISensorUpdate;
 
         if (doc.sector && (await this.sector.exist(doc.sector as ID)) == false) {
-            const info: IHandlingResponseError = { property: "sector", type: HandlingErrorType.FOUND };
+            const info: IHandlingResponseError = { property: "sector", type: HandlingErrorType.Found };
             reply.code(HttpStatus.NOT_FOUND);
             return info;
         }
@@ -65,4 +65,4 @@ class Controller {
     }
 }
 
-export const SensorController = new Controller(SensorManagerInstance, SectorManagerInstance);
+export const sensorController = new Controller(SensorManagerInstance, SectorManagerInstance);

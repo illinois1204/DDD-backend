@@ -6,18 +6,13 @@ import { SensorData } from "../entity/sensor.data";
 import { ISensorDataCreate } from "../interface/sensor.data";
 import { SensorDataRepository } from "../repository/sensor.data";
 
-class Manager implements IRepositoryManager<SensorData> {
-    private readonly repository: SensorDataRepository;
-    constructor() {
-        this.repository = new SensorDataRepository();
-    }
-
+export abstract class SensorDataManager extends SensorDataRepository implements IRepositoryManager<SensorData> {
     async exist(id: ID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 
     async create(doc: ISensorDataCreate): Promise<SensorData> {
-        return await this.repository.insert(doc);
+        return await this.insert(doc);
     }
 
     async getOne(id: ID): Promise<SensorData | null | undefined> {
@@ -32,9 +27,9 @@ class Manager implements IRepositoryManager<SensorData> {
         throw new Error("Method not implemented.");
     }
 
-    async getCountedList(limit: number, offset: number, filter?: any, order?: ISorting | undefined): Promise<IPaginationResponse> {
-        const total = await this.repository.count();
-        const body = await this.repository.list(limit, offset, undefined, order?.sortBy ? order : undefined);
+    async getCountedList(limit: number, offset: number, filter?: any, order?: ISorting | undefined): Promise<IPaginationResponse<SensorData>> {
+        const total = await this.count();
+        const body = await this.list(limit, offset, undefined, order?.sortBy ? order : undefined);
         return { total, body };
     }
 
@@ -47,5 +42,5 @@ class Manager implements IRepositoryManager<SensorData> {
     }
 }
 
-export abstract class SensorDataManager extends Manager {}
+class Manager extends SensorDataManager {}
 export const SensorDataManagerInstance = new Manager();

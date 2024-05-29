@@ -3,7 +3,7 @@ export interface IPagination {
     offset: number;
 }
 
-export interface IPaginationResponse {
+export interface IPaginationResponse<T> {
     total: number | Number;
-    body: object[];
+    body: T[];
 }

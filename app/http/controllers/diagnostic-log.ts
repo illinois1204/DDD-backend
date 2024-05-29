@@ -55,4 +55,4 @@ class Controller {
     }
 }
 
-export const DiagnosticLogController = new Controller(DiagnosticLogManagerInstance);
+export const diagnosticLogController = new Controller(DiagnosticLogManagerInstance);

@@ -6,47 +6,42 @@ import { Sensor } from "../entity/sensor";
 import { ISensorCreate, ISensorFilter, ISensorUpdate, SensorWhereBuilder } from "../interface/sensor";
 import { SensorRepository } from "../repository/sensor";
 
-class Manager implements IRepositoryManager<Sensor> {
-    private readonly repository: SensorRepository;
-    constructor() {
-        this.repository = new SensorRepository();
-    }
-
+export abstract class SensorManager extends SensorRepository implements IRepositoryManager<Sensor> {
     async exist(id: ID): Promise<boolean> {
-        return await this.repository.isExist(id);
+        return await this.isExist(id);
     }
 
     async create(doc: ISensorCreate): Promise<Sensor> {
-        return await this.repository.insert(doc);
+        return await this.insert(doc);
     }
 
     async getOne(id: ID): Promise<Sensor | null | undefined> {
-        return await this.repository.getById(id);
+        return await this.getById(id);
     }
 
     async getMany(id: ID[]): Promise<Sensor[]> {
         const where: SensorWhereBuilder = (plotter) => plotter.whereIn("id", id);
-        return await this.repository.listAll(where);
+        return await this.listAll(where);
     }
 
     async getList(filter?: any, reduce?: { limit: number; offset: number } | undefined): Promise<Sensor[]> {
         const where = filter ? this.makeListingWhere(filter) : undefined;
-        return reduce ? await this.repository.list(reduce.limit, reduce.offset, where) : await this.repository.listAll(where);
+        return reduce ? await this.list(reduce.limit, reduce.offset, where) : await this.listAll(where);
     }
 
-    async getCountedList(limit: number, offset: number, filter?: ISensorFilter, order?: ISorting | undefined): Promise<IPaginationResponse> {
+    async getCountedList(limit: number, offset: number, filter?: ISensorFilter, order?: ISorting | undefined): Promise<IPaginationResponse<Sensor>> {
         const where = filter ? this.makeListingWhere(filter) : undefined;
-        const total = await this.repository.count(where);
-        const body = await this.repository.list(limit, offset, where);
+        const total = await this.count(where);
+        const body = await this.list(limit, offset, where);
         return { total, body };
     }
 
     async updateOne(id: ID, doc: ISensorUpdate): Promise<Sensor | null | undefined> {
-        return await this.repository.updateById(id, doc);
+        return await this.updateById(id, doc);
     }
 
     async delete(id: ID | ID[]): Promise<void> {
-        await this.repository.deleteById(id);
+        await this.deleteById(id);
     }
 
     private makeListingWhere(filter: ISensorFilter): SensorWhereBuilder {
@@ -56,13 +51,13 @@ class Manager implements IRepositoryManager<Sensor> {
         };
     }
 
-    async getFreeSensors(limit: number, offset: number): Promise<IPaginationResponse> {
+    async getFreeSensors(limit: number, offset: number): Promise<IPaginationResponse<Sensor>> {
         const where: SensorWhereBuilder = (plotter) => plotter.whereNull("sector");
-        const total = await this.repository.count(where);
-        const body = await this.repository.list(limit, offset, where);
+        const total = await this.count(where);
+        const body = await this.list(limit, offset, where);
         return { total, body };
     }
 }
 
-export abstract class SensorManager extends Manager {}
+class Manager extends SensorManager {}
 export const SensorManagerInstance = new Manager();

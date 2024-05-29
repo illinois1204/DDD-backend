@@ -6,7 +6,7 @@ import { sql } from "../../db/sql/driver";
 import { Sector } from "../entity/sector";
 import { SectorWhereBuilder } from "../interface/sector";
 
-export class SectorRepository implements IBaseCRUD<Sector> {
+export abstract class SectorRepository implements IBaseCRUD<Sector> {
     async isExist(id: ID): Promise<boolean> {
         const [{ count }] = await sql<Sector>(Sector.alias).where("id", id).count();
         return Boolean(Number(count));

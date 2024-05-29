@@ -6,7 +6,7 @@ import { sql } from "../../db/sql/driver";
 import { SensorData } from "../entity/sensor.data";
 import { SensorDataWhereBuilder } from "../interface/sensor.data";
 
-export class SensorDataRepository implements IBaseCRUD<SensorData> {
+export abstract class SensorDataRepository implements IBaseCRUD<SensorData> {
     async isExist(id: ID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }

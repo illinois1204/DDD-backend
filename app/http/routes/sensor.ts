@@ -1,12 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { SensorController } from "../controllers/sensor";
+import { sensorController } from "../controllers/sensor";
 import { sensorList } from "../schemas/sensor/list";
 
 export const sensorProvider = async (app: FastifyInstance) => {
-    app.post("", SensorController.new);
-    app.get("", { schema: sensorList }, SensorController.list);
-    app.get("/free", SensorController.listFree);
-    app.get("/:id", SensorController.getOne);
-    app.patch("/:id", SensorController.updateOne);
-    app.delete("/:id", SensorController.deleteOne);
+    app.post("", sensorController.new);
+    app.get("", { schema: sensorList }, sensorController.list);
+    app.get("/free", sensorController.listFree);
+    app.get("/:id", sensorController.getOne);
+    app.patch("/:id", sensorController.updateOne);
+    app.delete("/:id", sensorController.deleteOne);
 };

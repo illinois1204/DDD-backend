@@ -14,23 +14,18 @@ import {
 } from "../interface/diagnostic-log";
 import { DiagnosticLogRepository } from "../repository/diagnostic-log";
 
-class Manager implements IRepositoryManager<DiagnosticLog> {
-    private readonly repository: DiagnosticLogRepository;
-    constructor() {
-        this.repository = new DiagnosticLogRepository();
-    }
-
+export abstract class DiagnosticLogManager extends DiagnosticLogRepository implements IRepositoryManager<DiagnosticLog> {
     async exist(id: ID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 
     async create(doc: IDiagnosticLogCreate): Promise<DiagnosticLog> {
         doc.inventory?.forEach((i) => (i.id = new ObjectId()));
-        return await this.repository.insert({ ...doc, date: new Date() });
+        return await this.insert({ ...doc, date: new Date() });
     }
 
     async getOne(id: ID): Promise<DiagnosticLog | null | undefined> {
-        return await this.repository.getById(id);
+        return await this.getById(id);
     }
 
     async getMany(id: ID[]): Promise<DiagnosticLog[]> {
@@ -39,13 +34,18 @@ class Manager implements IRepositoryManager<DiagnosticLog> {
 
     async getList(filter?: IDiagnosticLogFilter, reduce?: { limit: number; offset: number } | undefined): Promise<DiagnosticLog[]> {
         const where: Filter<DiagnosticLog> = { date: between(filter?.dateFrom, filter?.dateTo) };
-        return reduce ? await this.repository.list(reduce.limit, reduce.offset, where) : await this.repository.listAll(where);
+        return reduce ? await this.list(reduce.limit, reduce.offset, where) : await this.listAll(where);
     }
 
-    async getCountedList(limit: number, offset: number, filter?: IDiagnosticLogFilter, order?: ISorting | undefined): Promise<IPaginationResponse> {
+    async getCountedList(
+        limit: number,
+        offset: number,
+        filter?: IDiagnosticLogFilter,
+        order?: ISorting
+    ): Promise<IPaginationResponse<DiagnosticLog>> {
         const where: Filter<DiagnosticLog> = { date: between(filter?.dateFrom, filter?.dateTo) };
-        const total = await this.repository.count(where);
-        const body = await this.repository.list(limit, offset, where);
+        const total = await this.count(where);
+        const body = await this.list(limit, offset, where);
         return { total, body };
     }
 
@@ -54,11 +54,11 @@ class Manager implements IRepositoryManager<DiagnosticLog> {
     }
 
     async delete(id: ID | ID[]): Promise<void> {
-        await this.repository.deleteById(id);
+        await this.deleteById(id);
     }
 
     async updateInventory(id: ID, inventoryId: ID, doc: IDiagnosticLogInventoryUpdate): Promise<Inventory | null | undefined> {
-        const result = await this.repository.updateWithInnerId(id, inventoryId, doc);
+        const result = await this.updateWithInnerId(id, inventoryId, doc);
         return result?.inventory?.find((i) => i.id == inventoryId);
     }
 
@@ -85,5 +85,5 @@ class Manager implements IRepositoryManager<DiagnosticLog> {
     }
 }
 
-export abstract class DiagnosticLogManager extends Manager {}
+class Manager extends DiagnosticLogManager {}
 export const DiagnosticLogManagerInstance = new Manager();

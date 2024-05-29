@@ -20,7 +20,7 @@ export interface IRepositoryManager<T> {
     getOne(id: ID): Promise<T | null | undefined>;
     getMany(id: ID[]): Promise<T[]>;
     getList(filter?: any, reduce?: { limit: number; offset: number }): Promise<T[]>;
-    getCountedList(limit: number, offset: number, filter?: any, order?: ISorting): Promise<IPaginationResponse>;
+    getCountedList(limit: number, offset: number, filter?: any, order?: ISorting): Promise<IPaginationResponse<T>>;
     updateOne(id: ID, doc: Partial<Omit<T, "id" | "created">>): Promise<T | null | undefined>;
     delete(id: ID | ID[]): Promise<void>;
 }

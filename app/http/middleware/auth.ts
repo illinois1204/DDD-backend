@@ -12,3 +12,9 @@ export async function UseAuth(req: FastifyRequest, reply: FastifyReply) {
         reply.code(HttpStatus.UNAUTHORIZED).send({ message: "Unauthorized action" });
     }
 }
+
+export async function UseSocketAuth(req: FastifyRequest, reply: FastifyReply) {
+    const { Authorization } = req.query as Record<string, string>;
+    req.headers.authorization = `Bearer ${Authorization}`;
+    await UseAuth(req, reply);
+}
