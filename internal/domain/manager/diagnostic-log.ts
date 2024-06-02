@@ -14,18 +14,24 @@ import {
 } from "../interface/diagnostic-log";
 import { DiagnosticLogRepository } from "../repository/diagnostic-log";
 
-export abstract class DiagnosticLogManager extends DiagnosticLogRepository implements IRepositoryManager<DiagnosticLog> {
+class Repository extends DiagnosticLogRepository {}
+export abstract class DiagnosticLogManager implements IRepositoryManager<DiagnosticLog> {
+    private readonly repository: DiagnosticLogRepository;
+    constructor() {
+        this.repository = new Repository();
+    }
+
     async exist(id: ID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 
     async create(doc: IDiagnosticLogCreate): Promise<DiagnosticLog> {
         doc.inventory?.forEach((i) => (i.id = new ObjectId()));
-        return await this.insert({ ...doc, date: new Date() });
+        return await this.repository.insert({ ...doc, date: new Date() });
     }
 
     async getOne(id: ID): Promise<DiagnosticLog | null | undefined> {
-        return await this.getById(id);
+        return await this.repository.getById(id);
     }
 
     async getMany(id: ID[]): Promise<DiagnosticLog[]> {
@@ -34,7 +40,7 @@ export abstract class DiagnosticLogManager extends DiagnosticLogRepository imple
 
     async getList(filter?: IDiagnosticLogFilter, reduce?: { limit: number; offset: number } | undefined): Promise<DiagnosticLog[]> {
         const where: Filter<DiagnosticLog> = { date: between(filter?.dateFrom, filter?.dateTo) };
-        return reduce ? await this.list(reduce.limit, reduce.offset, where) : await this.listAll(where);
+        return reduce ? await this.repository.list(reduce.limit, reduce.offset, where) : await this.repository.listAll(where);
     }
 
     async getCountedList(
@@ -44,8 +50,8 @@ export abstract class DiagnosticLogManager extends DiagnosticLogRepository imple
         order?: ISorting
     ): Promise<IPaginationResponse<DiagnosticLog>> {
         const where: Filter<DiagnosticLog> = { date: between(filter?.dateFrom, filter?.dateTo) };
-        const total = await this.count(where);
-        const body = await this.list(limit, offset, where);
+        const total = await this.repository.count(where);
+        const body = await this.repository.list(limit, offset, where);
         return { total, body };
     }
 
@@ -54,11 +60,11 @@ export abstract class DiagnosticLogManager extends DiagnosticLogRepository imple
     }
 
     async delete(id: ID | ID[]): Promise<void> {
-        await this.deleteById(id);
+        await this.repository.deleteById(id);
     }
 
     async updateInventory(id: ID, inventoryId: ID, doc: IDiagnosticLogInventoryUpdate): Promise<Inventory | null | undefined> {
-        const result = await this.updateWithInnerId(id, inventoryId, doc);
+        const result = await this.repository.updateWithInnerId(id, inventoryId, doc);
         return result?.inventory?.find((i) => i.id == inventoryId);
     }
 

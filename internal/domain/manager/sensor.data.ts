@@ -6,13 +6,19 @@ import { SensorData } from "../entity/sensor.data";
 import { ISensorDataCreate } from "../interface/sensor.data";
 import { SensorDataRepository } from "../repository/sensor.data";
 
-export abstract class SensorDataManager extends SensorDataRepository implements IRepositoryManager<SensorData> {
+class Repository extends SensorDataRepository {}
+export abstract class SensorDataManager implements IRepositoryManager<SensorData> {
+    private readonly repository: SensorDataRepository;
+    constructor() {
+        this.repository = new Repository();
+    }
+
     async exist(id: ID): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
 
     async create(doc: ISensorDataCreate): Promise<SensorData> {
-        return await this.insert(doc);
+        return await this.repository.insert(doc);
     }
 
     async getOne(id: ID): Promise<SensorData | null | undefined> {
@@ -28,8 +34,8 @@ export abstract class SensorDataManager extends SensorDataRepository implements 
     }
 
     async getCountedList(limit: number, offset: number, filter?: any, order?: ISorting | undefined): Promise<IPaginationResponse<SensorData>> {
-        const total = await this.count();
-        const body = await this.list(limit, offset, undefined, order?.sortBy ? order : undefined);
+        const total = await this.repository.count();
+        const body = await this.repository.list(limit, offset, undefined, order?.sortBy ? order : undefined);
         return { total, body };
     }
 
